@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "597877088384",
+    "project_id": "gymhome-afde1",
+    "storage_bucket": "gymhome-afde1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597877088384:android:8a608d2c8957481a610665",
+        "android_client_info": {
+          "package_name": "pnm.bahrul3d.gymhome"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpiSIXFBLMYGfbVWMd3_paS7nvs1mlEQI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
