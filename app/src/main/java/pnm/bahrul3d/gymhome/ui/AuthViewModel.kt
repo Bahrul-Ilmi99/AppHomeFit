@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class AuthViewModel : ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
+    private val db = FirebaseFirestore.getInstance()
 
     private val _user = mutableStateOf(auth.currentUser)
     val user: State<com.google.firebase.auth.FirebaseUser?> = _user
@@ -39,11 +41,19 @@ class AuthViewModel : ViewModel() {
         _error.value = null
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
-                _isLoading.value = false
                 if (task.isSuccessful) {
-                    _user.value = auth.currentUser
-                    onSuccess()
+                    val uid = auth.currentUser?.uid ?: ""
+                    val userData = hashMapOf(
+                        "email" to email
+                    )
+                    db.collection("users").document(uid).set(userData)
+                        .addOnSuccessListener {
+                            _isLoading.value = false
+                            _user.value = auth.currentUser
+                            onSuccess()
+                        }
                 } else {
+                    _isLoading.value = false
                     _error.value = task.exception?.message
                 }
             }
