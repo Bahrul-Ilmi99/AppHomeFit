@@ -2,12 +2,30 @@ package pnm.bahrul3d.gymhome.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,48 +43,98 @@ fun HomeScreen(
     authViewModel: AuthViewModel,
     onDifficultySelected: (String) -> Unit,
     onViewHistory: () -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onOpenArticle: () -> Unit
 ) {
-    val difficulties = listOf("Beginner", "Intermediate", "Advanced")
+
+    val difficulties = listOf(
+        "Beginner",
+        "Intermediate",
+        "Advanced"
+    )
 
     Scaffold(
+
         topBar = {
+
             TopAppBar(
-                title = { 
+
+                title = {
+
                     Text(
-                        "GymHome", 
+                        text = "GymHome",
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    ) 
+                        color = Color.White
+                    )
                 },
+
                 actions = {
-                    IconButton(onClick = onViewHistory) {
-                        Icon(Icons.Default.History, contentDescription = "History", tint = Color.White)
+
+                    TextButton(
+                        onClick = onOpenArticle
+                    ) {
+
+                        Text(
+                            text = "Artikel",
+                            color = Color.White
+                        )
                     }
-                    IconButton(onClick = {
-                        authViewModel.logout()
-                        onLogout()
-                    }) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Logout", tint = Color.White)
+
+                    IconButton(
+                        onClick = onViewHistory
+                    ) {
+
+                        Icon(
+                            imageVector = Icons.Default.History,
+                            contentDescription = "History",
+                            tint = Color.White
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
+
+                            authViewModel.logout()
+                            onLogout()
+                        }
+                    ) {
+
+                        Icon(
+                            imageVector = Icons.Default.ExitToApp,
+                            contentDescription = "Logout",
+                            tint = Color.White
+                        )
                     }
                 },
+
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
             )
         }
-    ) { padding ->
+
+    ) { paddingValues ->
+
         Column(
+
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(paddingValues)
                 .background(MaterialTheme.colorScheme.background)
+
         ) {
-            // Header Section
+
+            // HEADER
             Box(
+
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+                    .clip(
+                        RoundedCornerShape(
+                            bottomStart = 32.dp,
+                            bottomEnd = 32.dp
+                        )
+                    )
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(
@@ -75,71 +143,125 @@ fun HomeScreen(
                             )
                         )
                     )
-                    .padding(horizontal = 24.dp, vertical = 32.dp)
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 32.dp
+                    )
+
             ) {
+
                 Column {
+
                     Text(
-                        "Halo, Selamat Datang!",
+                        text = "Halo, Selamat Datang!",
                         style = MaterialTheme.typography.headlineMedium,
                         color = Color.White
                     )
+
+                    Spacer(
+                        modifier = Modifier.height(8.dp)
+                    )
+
                     Text(
-                        "Siap untuk latihan hari ini?",
+                        text = "Siap untuk latihan hari ini?",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.White.copy(alpha = 0.9f)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(
+                modifier = Modifier.height(24.dp)
+            )
 
-            // Body Section
-            Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+            // BODY
+            Column(
+                modifier = Modifier.padding(horizontal = 24.dp)
+            ) {
+
                 Text(
-                    "Pilih Level Kamu",
+                    text = "Pilih Level Kamu",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                
+
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
+
                 difficulties.forEach { difficulty ->
+
                     Card(
+
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
-                            .clickable { onDifficultySelected(difficulty) },
+                            .clickable {
+                                onDifficultySelected(difficulty)
+                            },
+
                         shape = RoundedCornerShape(16.dp),
+
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surface
                         ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 2.dp
+                        )
+
                     ) {
+
                         Row(
+
                             modifier = Modifier
-                                .padding(24.dp)
-                                .fillMaxWidth(),
+                                .fillMaxWidth()
+                                .padding(24.dp),
+
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+
+                            horizontalArrangement =
+                                Arrangement.SpaceBetween
+
                         ) {
+
                             Column {
+
                                 Text(
                                     text = difficulty,
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary
                                 )
+
+                                Spacer(
+                                    modifier = Modifier.height(4.dp)
+                                )
+
                                 Text(
-                                    text = when(difficulty) {
-                                        "Beginner" -> "Latihan dasar & ringan"
-                                        "Intermediate" -> "Mulai tantangan baru"
-                                        else -> "Latihan intensitas tinggi"
+
+                                    text = when (difficulty) {
+
+                                        "Beginner" ->
+                                            "Latihan dasar & ringan"
+
+                                        "Intermediate" ->
+                                            "Mulai tantangan baru"
+
+                                        else ->
+                                            "Latihan intensitas tinggi"
                                     },
+
                                     style = MaterialTheme.typography.bodySmall,
                                     color = Color.Gray
                                 )
                             }
-                            // Placeholder for icon/arrow
-                            Text("➔", fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+
+                            Text(
+                                text = "➔",
+                                fontSize = 20.sp,
+                                color = MaterialTheme.colorScheme.primary
+                            )
                         }
                     }
                 }
